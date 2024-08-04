@@ -126,7 +126,7 @@ export default function Home() {
 
                   return (
                     <>
-                      <img src={`/${name.replace(/\s+/g, '_')}.png`} alt={name} width={100} height={100} style={{ objectFit: 'contain', borderRadius: '8px' }} />
+                      <img src={`/${name.toLowerCase().replace(/\s+/g, '_')}.png`} alt={name} width={100} height={100} style={{ objectFit: 'contain', borderRadius: '8px' }} />
                       <Typography variant="h5" color="#333" flexGrow={1}>{formattedName}</Typography>
                       <Typography variant="h6" color="#333" textAlign="center" minWidth="120px">Quantity: {quantity}</Typography>
                       <Stack direction="row" spacing={2}>
