@@ -122,6 +122,7 @@ export default function Home() {
             </Stack>
           </Box>
           <Box height="calc(100vh - 400px)" overflow="auto" p={2} bgcolor="white" sx={{ borderBottomLeftRadius: '16px', borderBottomRightRadius: '16px' }}>
+            {/*Search Bar*/}
             <TextField 
               variant="outlined" 
               placeholder="Search Items..." 
@@ -140,6 +141,7 @@ export default function Home() {
               }} 
             />
             <Stack spacing={2}>
+              {/*Item Content*/}
             {filteredInventory.map(({ name, quantity }) => (
               <Box key={name} width="100%" minHeight="150px" display="flex" alignItems="center" justifyContent="space-between" bgcolor="white" p={3} border="1px solid #ddd" sx={{ borderRadius: '16px' }}>
                 {(() => {
