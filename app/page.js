@@ -2,13 +2,15 @@
 import { useState, useEffect } from 'react';
 import { firestore } from '@/firebase';
 import { Typography, TextField, Stack, Modal, Box, Button } from "@mui/material";
-import { query, doc, collection, getDocs, setDoc, getDoc } from "firebase/firestore";
+import { query, doc, collection, getDocs, setDoc, getDoc, where } from "firebase/firestore";
 
 export default function Home() {
   const [inventory, setInventory] = useState([]);
   const [open, setOpen] = useState(false);
   const [itemName, setItemName] = useState('');
   const [totalItems, setTotalItems] = useState(0);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filteredInventory, setFilteredInventory] = useState([]);
 
   const updateInventory = async () => {
     const snapshot = query(collection(firestore, 'inventory'));
@@ -63,6 +65,14 @@ export default function Home() {
     updateInventory();
   }, []);
 
+  useEffect(() => {
+    if (searchQuery) {
+      setFilteredInventory(inventory.filter(item => item.name.toLowerCase().includes(searchQuery.toLowerCase())));
+    } else {
+      setFilteredInventory(inventory);
+    }
+  }, [searchQuery, inventory]);
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -109,14 +119,28 @@ export default function Home() {
                 height={60}
                 style={{ objectFit: 'contain' }}
               />
-              <Typography variant="h4">
-                Select Items
-              </Typography>
             </Stack>
           </Box>
           <Box height="calc(100vh - 400px)" overflow="auto" p={2} bgcolor="white" sx={{ borderBottomLeftRadius: '16px', borderBottomRightRadius: '16px' }}>
+            <TextField 
+              variant="outlined" 
+              placeholder="Search Items..." 
+              value={searchQuery} 
+              onChange={(e) => setSearchQuery(e.target.value)} 
+              sx={{ 
+                mb: 2, 
+                width: '600px', 
+                '& .MuiOutlinedInput-root': {
+                  backgroundColor: "#C4C4C4",
+                  borderRadius: "20px",
+                  '& fieldset': {
+                    borderRadius: "20px",
+                  },
+                },
+              }} 
+            />
             <Stack spacing={2}>
-            {inventory.map(({ name, quantity }) => (
+            {filteredInventory.map(({ name, quantity }) => (
               <Box key={name} width="100%" minHeight="150px" display="flex" alignItems="center" justifyContent="space-between" bgcolor="white" p={3} border="1px solid #ddd" sx={{ borderRadius: '16px' }}>
                 {(() => {
                   const formattedName = name
